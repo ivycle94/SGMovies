@@ -43,6 +43,7 @@ router.get('/movies', (req, res, next) => {
 		.then((movies) => res.status(200).json({ movies: movies }))
 		// if an error occurs, pass it to the handler
 		.catch(next)
+		//============ W O R K I N G ! =================
 })
 
 // SHOW
@@ -55,6 +56,7 @@ router.get('/movies/:id', (req, res, next) => {
 		.then((movie) => res.status(200).json({ movie: movie.toObject() }))
 		// if an error occurs, pass it to the handler
 		.catch(next)
+		//============ W O R K I N G ! =================
 })
 
 // CREATE
@@ -72,46 +74,49 @@ router.post('/movies/post', (req, res, next) => {
 		// the error handler needs the error message and the `res` object so that it
 		// can send an error message back to the client
 		.catch(next)
+		//============ W O R K I N G ! =================
 })
 
 // UPDATE
 // PATCH /examples/5a7db6c74d55bc51bdf39793
-router.patch('/examples/:id', removeBlanks, (req, res, next) => {
+router.patch('/movies/:id', (req, res, next) => {
 	// if the client attempts to change the `owner` property by including a new
 	// owner, prevent that by deleting that key/value pair
-	delete req.body.example.owner
+	// delete req.body.example.owner
 
-	Example.findById(req.params.id)
+	SGMovies.findById(req.params.id, req.body)
 		.then(handle404)
-		.then((example) => {
+		.then((movie) => {
 			// pass the `req` object and the Mongoose record to `requireOwnership`
 			// it will throw an error if the current user isn't the owner
-			requireOwnership(req, example)
+			// requireOwnership(req, example)
 
 			// pass the result of Mongoose's `.update` to the next `.then`
-			return example.updateOne(req.body.example)
+			return SGMovies.updateOne(req.body)
 		})
 		// if that succeeded, return 204 and no JSON
 		.then(() => res.sendStatus(204))
 		// if an error occurs, pass it to the handler
 		.catch(next)
+		//============ W O R K I N G ! =================
 })
 
 // DESTROY
 // DELETE /examples/5a7db6c74d55bc51bdf39793
-router.delete('/examples/:id', (req, res, next) => {
-	Example.findById(req.params.id)
+router.delete('/movies/:id', (req, res, next) => {
+	SGMovies.findById(req.params.id)
 		.then(handle404)
-		.then((example) => {
+		.then((SGMovies) => {
 			// throw an error if current user doesn't own `example`
-			requireOwnership(req, example)
+			// requireOwnership(req, example)
 			// delete the example ONLY IF the above didn't throw
-			example.deleteOne()
+			SGMovies.deleteOne()
 		})
 		// send back 204 and no content if the deletion succeeded
 		.then(() => res.sendStatus(204))
 		// if an error occurs, pass it to the handler
 		.catch(next)
+		//============ W O R K I N G ! =================
 })
 
 module.exports = router
