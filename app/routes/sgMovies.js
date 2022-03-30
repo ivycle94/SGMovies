@@ -36,8 +36,7 @@ router.get('/movies', (req, res, next) => {
 			// we want to convert each one to a POJO, so we use `.map` to
 			// apply `.toObject` to each one
 			console.log("sending movies", movies)
-			// return movies.map((movies) => movies.toObject())
-			return movies
+			return movies.map((movies) => movies.toObject())
 		})
 		// respond with status 200 and JSON of the examples
 		.then((movies) => res.status(200).json({ movies: movies }))
@@ -64,7 +63,7 @@ router.get('/movies/:id', (req, res, next) => {
 router.post('/movies/post', (req, res, next) => {
 	// set owner of new example to be current user
 	// req.body.example.owner = req.user.id
-
+	// SGMovies.create(req.body.movie)
 	SGMovies.create(req.body)
 		// respond to succesful `create` with status 201 and JSON of new "example"
 		.then((movie) => {
